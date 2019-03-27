@@ -23,7 +23,7 @@ public class ticTacToe extends JPanel
   public ticTacToe()
   {
 
-    setPreferredSize(new Dimension(n*150, n*150));
+    setPreferredSize(new Dimension(n*160, n*160));
     setBackground(new Color(0xc8a2c8));
     setFocusable(true);
 
@@ -39,8 +39,8 @@ public class ticTacToe extends JPanel
         {
           for(int i = 0; i < n; i++) { for(int j = 0; j < n; j++)
           {
-            if(xpos > 35+i*130 && xpos < (35+120)+(i*130))
-            { if(ypos > 35+j*130 && ypos < (35+120)+(j*130)) {
+            if(xpos > 20+i*150 && xpos < (20+140)+(i*150))
+            { if(ypos > 20+j*150 && ypos < (20+140)+(j*150)) {
                 tiles[i][j] = turn;
                 if(turn == 1) turn = 10;
                 else turn = 1;
@@ -101,7 +101,7 @@ public class ticTacToe extends JPanel
   void drawGrid(Graphics2D g)
   {
     g.setColor(gridColor);
-    g.fillRect(25, 25, 400,400);
+    g.fillRect(n*5, n*5, n*150,n*150);
     g.setStroke(new BasicStroke(1));
 
     if(GAMESTATE == gameState.Running);
@@ -113,25 +113,25 @@ public class ticTacToe extends JPanel
           if(tiles[i][j] == 0)
           {
             g.setColor(WHITE);
-            g.fillRect(35+i*130, 35+j*130, 120, 120);
+            g.fillRect(20+i*150, 20+j*150, 140, 140);
           }
           else if(tiles[i][j] == 1)
           {
             g.setColor(WHITE);
-            g.fillRect(35+i*130, 35+j*130, 120, 120);
+            g.fillRect(20+i*150, 20+j*150, 140, 140);
             g.setColor(RED);
             g.setStroke(new BasicStroke(5));
-            g.drawLine(40+i*130,40+j*130, 150+i*130, 150+j*130);
-            g.drawLine(150+i*130,40+j*130, 40+i*130, 150+j*130);
+            g.drawLine(25+i*150,25+j*150, 155+i*150, 155+j*150);
+            g.drawLine(155+i*150,25+j*150, 25+i*150, 155+j*150);
 
           }
           else if(tiles[i][j] == 10)
           {
             g.setColor(WHITE);
-            g.fillRect(35+i*130, 35+j*130, 120, 120);
+            g.fillRect(20+i*150, 20+j*150, 140, 140);
             g.setColor(BLUE);
             g.setStroke(new BasicStroke(5));
-            g.drawOval(40+i*130, 40+j*130, 110, 110);
+            g.drawOval(25+i*150, 25+j*150, 130, 130);
           }
         }
       }
