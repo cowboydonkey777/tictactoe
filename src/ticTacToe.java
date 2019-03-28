@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 //import java.util.Arrays;
 import javax.swing.*;
+import javax.swing.JOptionPane.*;
 
 public class ticTacToe extends JPanel
 {
@@ -9,10 +10,10 @@ public class ticTacToe extends JPanel
   enum gameState { Start, Running, Gameover }
   private gameState GAMESTATE = gameState.Start;
 
-  int[][] tiles = new int[3][3];
+  static int n = 5;
+  int[][] tiles = new int[n][n];
   // 0: empty, 1: X, 2: O
   int turn = 1;
-  static int n = 3;
 
   private Color RED = new Color(0xFF0000);
   private Color BLUE = new Color(0x0000FF);
@@ -53,9 +54,10 @@ public class ticTacToe extends JPanel
           if(endTest.winner == true)
           {
             String c = "The cat";
-            if(endTest.team == 1) c = "X";
-            if(endTest.team == 2) c = "O";
-            System.out.println(c + " wins!");
+            if(endTest.team == 1) JOptionPane.showMessageDialog(null, "X wins!") ;
+            else if(endTest.team == 2) JOptionPane.showMessageDialog(null, "O wins!");
+            else JOptionPane.showMessageDialog(null, "The cat wins!");
+            System.out.println("hello there");
             GAMESTATE = gameState.Start;
           }
         }
@@ -101,7 +103,7 @@ public class ticTacToe extends JPanel
   void drawGrid(Graphics2D g)
   {
     g.setColor(gridColor);
-    g.fillRect(n*5, n*5, n*150,n*150);
+    g.fillRect(15, 15, n*150,n*150);
     g.setStroke(new BasicStroke(1));
 
     if(GAMESTATE == gameState.Running);
@@ -145,7 +147,7 @@ public class ticTacToe extends JPanel
     int diagDownLeft = 0;
     int hori = 0;
     int vert = 0;
-    boolean somethingExists = false;
+    int somethingExists = 0;
     endValue check = new endValue();
     check.winner = false;
     check.team = 0;
@@ -153,16 +155,16 @@ public class ticTacToe extends JPanel
     for(int i = 0; i < n; i++){for(int j = 0; j < n; j++){
       hori += tiles[j][i];
       vert += tiles[i][j];
-      if(tiles[i][j] != 0) somethingExists = true;
+      if(tiles[i][j] != 0) somethingExists++;
     }
       diagDownRight += tiles[i][i];
-      diagDownLeft += tiles[2-i][i];
+      diagDownLeft += tiles[(n-1)-i][i];
 
       if(diagDownRight == n || diagDownLeft == n || vert == n || hori == n)
       {check.winner = true; check.team = 1;} // x wins
       else if(diagDownRight == 10*n || diagDownLeft == 10*n || vert == 10*n || hori == 10*n)
       {check.winner = true; check.team = 2;} // o wins
-      else if(i == n && somethingExists == true)
+      else if(i == n-1 && somethingExists == 9)
       {check.winner = true; check.team = 0;} // no one wins
 
       hori = 0;
