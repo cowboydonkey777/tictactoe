@@ -6,25 +6,24 @@ import javax.swing.JOptionPane.*;
 
 public class ticTacToe extends JPanel
 {
-
   enum gameState { Start, Running, Gameover }
   private gameState GAMESTATE = gameState.Start;
 
-  static int n = 5;
+  static int n = 3;
   int[][] tiles = new int[n][n];
   // 0: empty, 1: X, 2: O
-  int turn = 1;
+  int turn = 7;
 
   private Color RED = new Color(0xFF0000);
   private Color BLUE = new Color(0x0000FF);
   private Color gridColor = new Color(0x8F8F8F);
-  private Color WHITE = new Color(0xFFFFFF);
+  private Color TILE = new Color(0xD3D3D3);
 
 
   public ticTacToe()
   {
 
-    setPreferredSize(new Dimension(n*160, n*160));
+    setPreferredSize(new Dimension((n*75)+14, (n*75)+14));
     setBackground(new Color(0xc8a2c8));
     setFocusable(true);
 
@@ -40,24 +39,28 @@ public class ticTacToe extends JPanel
         {
           for(int i = 0; i < n; i++) { for(int j = 0; j < n; j++)
           {
-            if(xpos > 20+i*150 && xpos < (20+140)+(i*150))
-            { if(ypos > 20+j*150 && ypos < (20+140)+(j*150)) {
-                tiles[i][j] = turn;
-                if(turn == 1) turn = 10;
-                else turn = 1;
-              }}
+            if(xpos > 10+i*75 && xpos < (10+70)+(i*75))
+            {
+              if(ypos > 10+j*75 && ypos < (10+70)+(j*75))
+              {
+              if(tiles[i][j] == 0) {
+                  tiles[i][j] = turn;
+                  if (turn == 7) turn = 10;
+                  else turn = 7;
+              }
+              }
+            }
           }}
           repaint();
 
-          endValue endTest = new endValue();
+          endValue endTest;
           endTest = end();
-          if(endTest.winner == true)
+          if(endTest.winner) // was endTest.winner == true
           {
-            String c = "The cat";
             if(endTest.team == 1) JOptionPane.showMessageDialog(null, "X wins!") ;
             else if(endTest.team == 2) JOptionPane.showMessageDialog(null, "O wins!");
             else JOptionPane.showMessageDialog(null, "The cat wins!");
-            System.out.println("hello there");
+
             GAMESTATE = gameState.Start;
           }
         }
@@ -103,7 +106,7 @@ public class ticTacToe extends JPanel
   void drawGrid(Graphics2D g)
   {
     g.setColor(gridColor);
-    g.fillRect(15, 15, n*150,n*150);
+    g.fillRect(7, 7, n*75,n*75);
     g.setStroke(new BasicStroke(1));
 
     if(GAMESTATE == gameState.Running);
@@ -114,26 +117,26 @@ public class ticTacToe extends JPanel
         {
           if(tiles[i][j] == 0)
           {
-            g.setColor(WHITE);
-            g.fillRect(20+i*150, 20+j*150, 140, 140);
+            g.setColor(TILE);
+            g.fillRect(10+i*75, 10+j*75, 70, 70);
           }
-          else if(tiles[i][j] == 1)
+          else if(tiles[i][j] == 7)
           {
-            g.setColor(WHITE);
-            g.fillRect(20+i*150, 20+j*150, 140, 140);
+            g.setColor(TILE);
+            g.fillRect(10+i*75, 10+j*75, 70, 70);
             g.setColor(RED);
-            g.setStroke(new BasicStroke(5));
-            g.drawLine(25+i*150,25+j*150, 155+i*150, 155+j*150);
-            g.drawLine(155+i*150,25+j*150, 25+i*150, 155+j*150);
+            g.setStroke(new BasicStroke(3));
+            g.drawLine(15+i*75,15+j*75, 75+i*75, 75+j*75);
+            g.drawLine(75+i*75,15+j*75, 15+i*75, 75+j*75);
 
           }
           else if(tiles[i][j] == 10)
           {
-            g.setColor(WHITE);
-            g.fillRect(20+i*150, 20+j*150, 140, 140);
+            g.setColor(TILE);
+            g.fillRect(10+i*75, 10+j*75, 70, 70);
             g.setColor(BLUE);
-            g.setStroke(new BasicStroke(5));
-            g.drawOval(25+i*150, 25+j*150, 130, 130);
+            g.setStroke(new BasicStroke(3));
+            g.drawOval(15+i*75, 15+j*75, 60, 60);
           }
         }
       }
@@ -160,11 +163,11 @@ public class ticTacToe extends JPanel
       diagDownRight += tiles[i][i];
       diagDownLeft += tiles[(n-1)-i][i];
 
-      if(diagDownRight == n || diagDownLeft == n || vert == n || hori == n)
+      if(diagDownRight == 7*3 || diagDownLeft == 7*3 || vert == 7*3 || hori == 7*3)
       {check.winner = true; check.team = 1;} // x wins
-      else if(diagDownRight == 10*n || diagDownLeft == 10*n || vert == 10*n || hori == 10*n)
+      else if(diagDownRight == 10*3 || diagDownLeft == 10*3 || vert == 10*3 || hori == 10*3)
       {check.winner = true; check.team = 2;} // o wins
-      else if(i == n-1 && somethingExists == 9)
+      else if(i == n-1 && somethingExists == n*n)
       {check.winner = true; check.team = 0;} // no one wins
 
       hori = 0;
