@@ -9,7 +9,7 @@ public class ticTacToe extends JPanel
   enum gameState { Start, Running, Gameover }
   private gameState GAMESTATE = gameState.Start;
 
-  static int n = 3;
+  static int n = 5;
   int[][] tiles = new int[n][n];
   // 0: empty, 1: X, 2: O
   int turn = 7;
@@ -146,6 +146,9 @@ public class ticTacToe extends JPanel
 
   endValue end()
   {
+    int L = 5;
+    if(L > n) L = n;
+
     int diagDownRight = 0;
     int diagDownLeft = 0;
     int hori = 0;
@@ -155,24 +158,37 @@ public class ticTacToe extends JPanel
     check.winner = false;
     check.team = 0;
 
-    for(int i = 0; i < n; i++){for(int j = 0; j < n; j++){
-      hori += tiles[j][i];
-      vert += tiles[i][j];
-      if(tiles[i][j] != 0) somethingExists++;
+    for(int i = 0; i < (n-L+1); i++){for(int j = 0; j < n; j++){
+      hori = 0; vert = 0; diagDownRight = 0; diagDownLeft = 0;
+      for(int k = 0; k < L; k++)
+      {
+        hori += tiles[k+i][j];
+        vert += tiles[j][k+i];// + tiles[i][j+1] + tiles[i][j+2];
+        if((j+k) <= (n-1)){
+          diagDownRight += tiles[k+i][k+j];
+          diagDownLeft += tiles[(n-1)-(k+i)][k+j];
+          //System.out.print("stuff: " + (k+i) + " " + (k+j) + '\n');
+        }
+        //diagDownLeft += tiles[(n - j) - (k+1)][i+k];
+      }
+      /*for(int k = 0; k < (n-L+1); k++)
+      {
+        diagDownRight += tiles[i][k];
+      }*/
+      System.out.print("hori: " + hori + " vert: " + vert + " diagDR: " + diagDownRight + " diagDL: " + diagDownLeft + '\n');
+      //diagDownLeft += tiles[(n - j) - 1][i] + tiles[(n - j) - 2][i + 1] + tiles[(n - j) - 3][i + 2];
+      if(vert == 7*L || hori == 7*L || vert == 10*L || hori == 10*L) break;
+      else if(diagDownRight == 7*L || diagDownRight == 10*L  || diagDownLeft == 7*L|| diagDownLeft == 10*L) break;
+      somethingExists++;
     }
-      diagDownRight += tiles[i][i];
-      diagDownLeft += tiles[(n-1)-i][i];
-
-      if(diagDownRight == 7*3 || diagDownLeft == 7*3 || vert == 7*3 || hori == 7*3)
-      {check.winner = true; check.team = 1;} // x wins
-      else if(diagDownRight == 10*3 || diagDownLeft == 10*3 || vert == 10*3 || hori == 10*3)
-      {check.winner = true; check.team = 2;} // o wins
+      if(diagDownRight == 7*L || diagDownLeft == 7*L || vert == 7*L || hori == 7*L)
+      {check.winner = true; check.team = 1; break;} // x wins
+      else if(diagDownRight == 10*L || diagDownLeft == 10*L || vert == 10*L || hori == 10*L)
+      {check.winner = true; check.team = 2; break;} // o wins
       else if(i == n-1 && somethingExists == n*n)
-      {check.winner = true; check.team = 0;} // no one wins
-
-      hori = 0;
-      vert = 0;
+      {check.winner = true; check.team = 0; break;} // no one wins
     }
+    System.out.println('\n');
     return check;
   }
 
